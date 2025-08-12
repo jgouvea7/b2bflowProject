@@ -7,7 +7,7 @@ import uuid
 Base = declarative_base()
 
 class ContactModel(Base):
-    __tablename__ = "contact"
+    __tablename__ = "contacts"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
     name = Column(String, nullable=False)

@@ -30,14 +30,20 @@ def create_contact(contact: CreateContact):
 
 
 def get_contacts():
-    contacts = session.query(ContactModel).all()
-    return contacts
+    try:
+        contacts = session.query(ContactModel).all()
+        return contacts
+    finally:
+        session.close()
 
 
 
 def get_contact_by_phone(phone: str):
-    contact = session.query(ContactModel).filter(ContactModel.phone == phone).first()
-    return contact
+    try:
+        contact = session.query(ContactModel).filter(ContactModel.phone == phone).first()
+        return contact
+    finally:
+        session.close()
 
 
 
@@ -47,7 +53,6 @@ def delete_contacts():
         for contact in contacts:
             session.delete(contact)
         session.commit()
-        session.close()
     
     return {
         "message": "Contacts were successfully deleted"
@@ -57,17 +62,18 @@ def delete_contacts():
 
 def delete_contact_by_phone(phone: str):
     contact = get_contact_by_phone(phone)
-    if contact:
-        session.delete(contact)
-        session.commit()
-        session.close()
-        return {
-            "message": f"Contact '{contact.name}' with number  {contact.phone} was successfully deleted"
-        }
-    else:
-        return {
-            "message": "Contact not found"
-        }
+    with session:
+        if contact:
+            session.delete(contact)
+            session.commit()
+
+            return {
+                "message": f"Contact '{contact.name}' with number  {contact.phone} was successfully deleted"
+            }
+        else:
+            return {
+                "message": "Contact not found"
+            }
 
 
 

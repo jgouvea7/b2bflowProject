@@ -9,11 +9,11 @@ from services.service import *
 router = APIRouter()
 
 
-@router.post("/v1/contacts")
+@router.post("/v1/contacts", status_code=status.HTTP_201_CREATED)
 def create_contact_api(contact: CreateContact):
     create_contact(contact)
     return {
-        "message": "Create contact is succefully"
+        "message": "Contact created successfully"
     }
 
 
@@ -23,11 +23,9 @@ def get_contacts_api():
 
 
 
-@router.get("/v1/contacts/by-phone", response_model=ContactResponse)
+@router.get("/v1/contacts/get-by-phone", response_model=ContactResponse)
 def get_contact_by_phone_api(contact: ContactPhone):
     contact = get_contact_by_phone(contact.phone)
-    if not contact:
-        raise HTTPException(status_code=404, detail="Contact not found")
     return {
          "name": contact.name,
          "phone": contact.phone
@@ -35,7 +33,7 @@ def get_contact_by_phone_api(contact: ContactPhone):
 
 
 
-@router.post("/v1/contacts/send-message", response_model=ResponseMessage)
+@router.post("/v1/contacts/send-message")
 def send_message_api(contact: ContactPhone):
     result = send_message(contact.phone)
     return result
@@ -49,7 +47,7 @@ def delete_contact_api():
 
 
 
-@router.delete("/v1/contacts/by-phone")
+@router.delete("/v1/contacts/delete-by-phone", response_model=ResponseMessage)
 def delete_contact_by_phone_api(contact: ContactPhone):
     result = delete_contact_by_phone(contact.phone)
     return result

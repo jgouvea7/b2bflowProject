@@ -13,16 +13,13 @@ Backend em Python usando FastAPI para gerenciar contatos e enviar mensagens via 
 - Dotenv
 - Requests
 
----
+## Setup
 
 ### Pré-requisitos
 - Python 3.13.5
 - FastAPI 0.116.1
 - Conta no Supabase criada e configurada
 - Conta no Z-API criada e configurada 
-
-
-## Setup
 
 ### 1. Criar tabela no Supabase
 

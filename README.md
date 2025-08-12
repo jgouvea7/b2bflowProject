@@ -122,6 +122,22 @@ DB=sua_string_de_conexao_ao_banco
 ```
 ---
 
+## Testes
+
+### Como rodar os testes
+
+Para rodar os testes, use o comando abaixo no terminal, a partir da raiz do projeto:
+
+```bash
+python -m pytest tests/nome_do_arquivo.py
+```
+Se quiser rodar todos os testes da pasta:
+
+```bash
+python -m pytest tests/
+```
+---
+
 ### Considerações Finais
 Este projeto foi desenvolvido como parte do desafio técnico da B2BFlow para demonstrar conhecimentos em backend com FastAPI, manipulação de banco de dados via ORM e integração com APIs externas.
 

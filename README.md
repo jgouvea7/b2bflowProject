@@ -35,7 +35,7 @@ A tabela `contacts` não precisa ser criada manualmente. Ela é criada automatic
 
 ### 2. Variáveis de ambiente
 
-Você vai precisar configurar duas partes diferentes no arquivo '.env' (pode ser um único arquivo ou dois separados):
+Você vai precisar configurar duas partes diferentes no arquivo `.env` (pode ser um único arquivo ou dois separados):
 
 #### Para a Z-API(env/zapi.env)
 ```env
@@ -82,10 +82,10 @@ DB=sua_string_de_conexao_ao_banco
 |--------|-------------------------|----------------------------------|
 | POST   | `/v1/contacts`           | Criar um novo contato             |
 | GET    | `/v1/contacts`           | Listar todos os contatos          |
-| GET    | `/v1/contacts/by-phone`   | Buscar contato pelo telefone      |
+| GET    | `/v1/contacts/get-by-phone`   | Buscar contato pelo telefone      |
 | POST   | `/v1/contacts/send-message` | Enviar mensagem para contato    |
 | DELETE | `/v1/contacts`           | Deletar todos os contatos         |
-| DELETE | `/v1/contacts/by-phone` | Deletar contato pelo telefone  |
+| DELETE | `/v1/contacts/delete-by-phone` | Deletar contato pelo telefone  |
 
 
 ### Exemplo de requisição para criar contato

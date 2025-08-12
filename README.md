@@ -13,6 +13,8 @@ Backend em Python usando FastAPI para gerenciar contatos e enviar mensagens via 
 - Dotenv
 - Requests
 
+---
+
 ### Pré-requisitos
 - Python 3.13.5
 - FastAPI 0.116.1

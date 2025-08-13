@@ -28,9 +28,9 @@ A tabela `contacts` não precisa ser criada manualmente. Ela é criada automatic
 
 | Coluna | Tipo     | Observação             |
 |--------|----------|-----------------------|
-| id     | UUID     | Primary Key, auto-gerado|
-| name   | text     | Não nulo              |
-| phone  | text     | Não nulo, único       |
+| id     | UUID     | Primary Key, auto-increment|
+| name   | text     | Not Null              |
+| phone  | text     | Not Null, unique      |
 
 
 ### 2. Variáveis de ambiente

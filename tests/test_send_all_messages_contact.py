@@ -22,6 +22,11 @@ def test_create_contact():
     assert response2.status_code == 201
 
 
+def test_get_all_contacts():
+    response = client.get("/v1/contacts")
+    assert response.status_code == 200
+
+
 def test_send_message():
     response = client.post("/v1/contacts/send-message-all")
     assert response.status_code == 200

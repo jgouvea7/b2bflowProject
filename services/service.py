@@ -109,3 +109,46 @@ def send_message(phone: str):
         return {
             "error": f"Unexpected error occurred: {e}"
         }
+    
+
+def send_message_all():
+    try:
+        contacts = get_contacts()
+        if contacts:
+            results = []
+
+            for contact in contacts:
+                url = f"https://api.z-api.io/instances/{INSTANCE_ID}/token/{TOKEN}/send-text"
+
+                payload = {
+                    "phone": contact.phone,
+                    "message": f"Olá {contact.name}, tudo bem com você?"
+                }
+
+                headers = {
+                    "Content-type": "application/json",
+                    "client-token": CLIENT_TOKEN
+                }
+
+                response = requests.post(url, json=payload, headers=headers)
+
+                if response.status_code == 200:
+                    results.append({
+                        "phone": contact.phone,
+                        "status": "success",
+                        "message": "Message sent successfully"
+                    })
+                else:
+                    results.append({
+                        "phone": contact.phone,
+                        "status": "error",
+                        "error": f"Failed to send message: {response.text}"
+                    })
+
+            return results
+        else:
+            return {"error": "Contact not found"}
+    except Exception as e:
+        return {
+            "error": f"Unexpected error occurred: {e}"
+        }

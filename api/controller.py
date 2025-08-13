@@ -39,6 +39,10 @@ def send_message_api(contact: ContactPhone):
     return result
 
 
+@router.post("/v1/contacts/send-message-all")
+def send_message_all_api():
+    return send_message_all()
+
 
 @router.delete("/v1/contacts")
 def delete_contact_api():

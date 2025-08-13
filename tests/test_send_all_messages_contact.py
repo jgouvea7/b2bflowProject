@@ -6,20 +6,24 @@ client = TestClient(app)
 
 def test_create_contact():
     new_contact = {
-        "name": "jonnathas",
+        "name": "Jonnathas",
         "phone": "5511999999999"
+    }
+
+    new_contact2 = {
+        "name": "Roberto",
+        "phone": "5511999999998"
     }
 
     response = client.post("/v1/contacts", json=new_contact)
     assert response.status_code == 201
 
+    response2 = client.post("/v1/contacts", json=new_contact2)
+    assert response2.status_code == 201
+
 
 def test_send_message():
-    contact = {
-        "phone": "5511952937705"
-    }
-
-    response = client.post("/v1/contacts/send-message", json=contact)
+    response = client.post("/v1/contacts/send-message-all")
     assert response.status_code == 200
 
 

@@ -19,7 +19,7 @@ def test_send_message():
         "phone": "5511952937705"
     }
 
-    response = client.post("/v1/contacts/send-message", json=contact)
+    response = client.post("/v1/contacts/send-message-by-phone", json=contact)
     assert response.status_code == 200
 
 

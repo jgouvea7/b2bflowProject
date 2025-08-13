@@ -77,7 +77,7 @@ def delete_contact_by_phone(phone: str):
 
 
 
-def send_message(phone: str):
+def send_message_by_phone(phone: str):
     try:
         contact = get_contact_by_phone(phone)
         if contact:

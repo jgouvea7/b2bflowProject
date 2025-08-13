@@ -33,9 +33,9 @@ def get_contact_by_phone_api(contact: ContactPhone):
 
 
 
-@router.post("/v1/contacts/send-message")
+@router.post("/v1/contacts/send-message-by-phone")
 def send_message_api(contact: ContactPhone):
-    result = send_message(contact.phone)
+    result = send_message_by_phone(contact.phone)
     return result
 
 

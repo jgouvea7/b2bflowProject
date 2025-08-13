@@ -37,14 +37,11 @@ def get_contacts():
         session.close()
 
 
-
 def get_contact_by_phone(phone: str):
-    try:
-        contact = session.query(ContactModel).filter(ContactModel.phone == phone).first()
+    contact = session.query(ContactModel).filter(ContactModel.phone == phone).first()
+    if contact:
         return contact
-    finally:
-        session.close()
-
+ 
 
 
 def delete_contacts():
@@ -62,18 +59,18 @@ def delete_contacts():
 
 def delete_contact_by_phone(phone: str):
     contact = get_contact_by_phone(phone)
-    with session:
-        if contact:
+    if contact:
+        with session:
             session.delete(contact)
             session.commit()
 
             return {
                 "message": f"Contact '{contact.name}' with number  {contact.phone} was successfully deleted"
             }
-        else:
-            return {
-                "message": "Contact not found"
-            }
+    else:
+        return {
+            "error": "Contact not found"
+        }
 
 
 
@@ -147,7 +144,7 @@ def send_message_all():
 
             return results
         else:
-            return {"error": "Contact not found"}
+            return {"error": "No contacts found"}
     except Exception as e:
         return {
             "error": f"Unexpected error occurred: {e}"

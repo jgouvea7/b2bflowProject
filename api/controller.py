@@ -23,13 +23,15 @@ def get_contacts_api():
 
 
 
-@router.get("/v1/contacts/get-by-phone", response_model=ContactResponse)
+@router.get("/v1/contacts/get-by-phone")
 def get_contact_by_phone_api(contact: ContactPhone):
     contact = get_contact_by_phone(contact.phone)
-    return {
-         "name": contact.name,
-         "phone": contact.phone
-    }
+    if contact:
+        return contact
+    else:
+        return {
+            "error": "Contact not found"
+        }
 
 
 
@@ -46,12 +48,11 @@ def send_message_all_api():
 
 @router.delete("/v1/contacts")
 def delete_contact_api():
-    result = delete_contacts()
-    return result
+    return delete_contacts()
 
 
 
-@router.delete("/v1/contacts/delete-by-phone", response_model=ResponseMessage)
+@router.delete("/v1/contacts/delete-by-phone")
 def delete_contact_by_phone_api(contact: ContactPhone):
     result = delete_contact_by_phone(contact.phone)
     return result

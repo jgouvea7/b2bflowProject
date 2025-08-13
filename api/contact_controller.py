@@ -1,15 +1,14 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from domain.dto.contact_response import ContactResponse
 from domain.dto.create_contact import CreateContact
 from domain.dto.contact_phone import ContactPhone
-from domain.dto.response_message import ResponseMessage
-from services.service import *
+from services.contact_service import *
 
 
-router = APIRouter()
+contact = APIRouter()
 
 
-@router.post("/v1/contacts", status_code=status.HTTP_201_CREATED)
+@contact.post("/v1/contacts", status_code=status.HTTP_201_CREATED)
 def create_contact_api(contact: CreateContact):
     create_contact(contact)
     return {
@@ -18,13 +17,13 @@ def create_contact_api(contact: CreateContact):
     }
 
 
-@router.get("/v1/contacts", response_model=list[ContactResponse])
+@contact.get("/v1/contacts", response_model=list[ContactResponse])
 def get_contacts_api():
     return get_contacts()
 
 
 
-@router.get("/v1/contacts/get-by-phone")
+@contact.get("/v1/contacts/get-by-phone")
 def get_contact_by_phone_api(contact: ContactPhone):
     contact = get_contact_by_phone(contact.phone)
     if contact:
@@ -36,18 +35,19 @@ def get_contact_by_phone_api(contact: ContactPhone):
         }
 
 
-@router.post("/v1/contacts/send-message-all")
+@contact.post("/v1/contacts/send-message-all")
 def send_message_all_api():
     return send_message_all()
 
 
-@router.delete("/v1/contacts")
+@contact.delete("/v1/contacts")
 def delete_contact_api():
     return delete_contacts()
 
 
 
-@router.delete("/v1/contacts/delete-by-phone")
+@contact.delete("/v1/contacts/delete-by-phone")
 def delete_contact_by_phone_api(contact: ContactPhone):
     result = delete_contact_by_phone(contact.phone)
     return result
+

@@ -1,8 +1,9 @@
-from infrastructure.model.model import session, ContactModel
-from fastapi import HTTPException, status
+from infrastructure.model.contact import session, ContactModel
 from domain.dto.create_contact import CreateContact
-import requests
+from fastapi import HTTPException, status
+from services.logs_service import create_log
 from dotenv import load_dotenv
+import requests
 import os
 
 load_dotenv(dotenv_path="../b2bflow/infrastructure/env/z-api.env")
@@ -24,6 +25,13 @@ def create_contact(contact: CreateContact):
             name=contact.name,
             phone=contact.phone
         )
+
+        document = {
+            "name": new_user.name,
+            "phone": new_user.phone
+        }
+
+        create_log(document, "contact-create-success")
         session.add(new_user)
         session.commit()
 
@@ -50,11 +58,13 @@ def delete_contacts():
         for contact in contacts:
             session.delete(contact)
         session.commit()
-    
-    return {
+
+        document = {
         "status": "success",
         "message": "Contacts were successfully deleted"
     }
+        create_log(document, "contact-delete-all-success")
+    return document
 
 
 
@@ -65,15 +75,19 @@ def delete_contact_by_phone(phone: str):
             session.delete(contact)
             session.commit()
 
-            return {
+            document = {
                 "status": "success",
                 "message": f"Contact '{contact.name}' with number  {contact.phone} was successfully deleted"
             }
+            create_log(document, "contact-delete-success")
+            return document
     else:
-        return {
+        document = {
             "status": "error",
             "error": "Contact not found"
         }
+        create_log(document, "contact-delete-error")
+        return  document
 
 
 
@@ -99,18 +113,23 @@ def send_message_all():
                 response = requests.post(url, json=payload, headers=headers)
 
                 if response.status_code == 200:
-                    results.append({
+                    document = {
                         "phone": contact.phone,
                         "status": "success",
                         "message": "Message sent successfully"
-                    })
+                    }
+
+                    results.append(document)
+                    create_log(document, "message-send-success")
                 else:
-                    results.append({
+                    document = {
                         "phone": contact.phone,
                         "status": "error",
                         "error": f"Failed to send message: {response.text}"
-                    })
+                    }
 
+                    results.append(document)
+                    create_log(document, "message-send-error")
             return results
         else:
             return {
@@ -118,6 +137,12 @@ def send_message_all():
                 "error": "No contacts found"
             }
     except Exception as e:
-        return {
-            "error": f"Unexpected error occurred: {e}"
-        }
+        document = {"error": f"Unexpected error occurred: {e}"}
+        create_log(document, "unexpected-error")
+        return document
+
+
+
+
+
+

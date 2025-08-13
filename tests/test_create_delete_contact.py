@@ -24,3 +24,11 @@ def test_delete_contact():
         headers={"Content-Type": "application/json"},
     )
     assert response.status_code == 200
+
+def test_get_all_logs():
+    response = client.get("/v1/logs")
+    assert response.status_code == 200
+
+def test_delete_all_logs():
+    response = client.delete("/v1/logs")
+    assert response.status_code == 200

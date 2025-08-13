@@ -17,3 +17,13 @@ def test_create_contact():
 def test_delete_all_contacts():
     response = client.delete("/v1/contacts")
     assert response.status_code == 200
+
+    
+def test_get_all_logs():
+    response = client.get("/v1/logs")
+    assert response.status_code == 200
+
+
+def test_delete_all_logs():
+    response = client.delete("/v1/logs")
+    assert response.status_code == 200

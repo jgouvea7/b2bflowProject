@@ -87,8 +87,9 @@ DB=sua_string_de_conexao_ao_banco
 | DELETE | `/v1/contacts`           | Deletar todos os contatos         |
 | DELETE | `/v1/contacts/delete-by-phone` | Deletar contato pelo telefone  |
 
+## Criação de contato
 
-### Exemplo de requisição para criar contato
+#### Exemplo de requisição para criar contato
 
 ```json
 {
@@ -100,26 +101,31 @@ DB=sua_string_de_conexao_ao_banco
 #### Resposta de sucesso
 ```json
 {
+  "status": "success",
   "message": "Contact created successfully"
 }
 ```
 
----
 
-### Exemplo de requisição para enviar mensagem
+## Envio de mensagem
 
+#### Resposta de sucesso ao enviar mensagem
 ```json
 {
-    "phone": "5511999999999"
-}
-```
-#### Resposta de sucesso
-```json
-{
+  "phone": "55119599999999",
+  "status": "success",
   "message": "Message sent successfully"
 }
 ```
----
+
+#### Resposta de erro ao enviar mensagem
+
+```json
+{
+  "status": "error",
+  "error": "No contacts found"
+}
+```
 
 ## Testes
 

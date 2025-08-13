@@ -52,6 +52,7 @@ def delete_contacts():
         session.commit()
     
     return {
+        "status": "success",
         "message": "Contacts were successfully deleted"
     }
 
@@ -65,10 +66,12 @@ def delete_contact_by_phone(phone: str):
             session.commit()
 
             return {
+                "status": "success",
                 "message": f"Contact '{contact.name}' with number  {contact.phone} was successfully deleted"
             }
     else:
         return {
+            "status": "error",
             "error": "Contact not found"
         }
 
@@ -110,7 +113,10 @@ def send_message_all():
 
             return results
         else:
-            return {"error": "No contacts found"}
+            return {
+                "status": "error",
+                "error": "No contacts found"
+            }
     except Exception as e:
         return {
             "error": f"Unexpected error occurred: {e}"

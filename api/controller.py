@@ -13,6 +13,7 @@ router = APIRouter()
 def create_contact_api(contact: CreateContact):
     create_contact(contact)
     return {
+        "status": "success",
         "message": "Contact created successfully"
     }
 
@@ -30,6 +31,7 @@ def get_contact_by_phone_api(contact: ContactPhone):
         return contact
     else:
         return {
+            "status": "error",
             "error": "Contact not found"
         }
 

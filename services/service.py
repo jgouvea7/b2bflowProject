@@ -74,40 +74,6 @@ def delete_contact_by_phone(phone: str):
 
 
 
-def send_message_by_phone(phone: str):
-    try:
-        contact = get_contact_by_phone(phone)
-        if contact:
-            url = f"https://api.z-api.io/instances/{INSTANCE_ID}/token/{TOKEN}/send-text"
-
-            payload = {
-                "phone": phone,
-                "message": f"Olá {contact.name}, tudo bem com você?"
-            }
-
-            headers = {
-                "Content-type": "application/json",
-                "client-token": CLIENT_TOKEN
-            }
-
-            response = requests.post(url, json=payload, headers=headers)
-
-            if response.status_code == 200:
-                return {
-                    "message": "Message sent successfully"
-                }
-            else:
-                return {
-                    "error": f"Failed to send message: {response.text}"
-                }
-        else:
-            return {"error": "Contact not found"}
-    except Exception as e:
-        return {
-            "error": f"Unexpected error occurred: {e}"
-        }
-    
-
 def send_message_all():
     try:
         contacts = get_contacts()

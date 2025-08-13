@@ -83,7 +83,6 @@ DB=sua_string_de_conexao_ao_banco
 | POST   | `/v1/contacts`           | Criar um novo contato             |
 | GET    | `/v1/contacts`           | Listar todos os contatos          |
 | GET    | `/v1/contacts/get-by-phone`   | Buscar contato pelo telefone      |
-| POST   | `/v1/contacts/send-message-by-phone` | Enviar mensagem para contato    |
 | POST   | `/v1/contacts/send-message-all` | Enviar mensagem para todos contatos
 | DELETE | `/v1/contacts`           | Deletar todos os contatos         |
 | DELETE | `/v1/contacts/delete-by-phone` | Deletar contato pelo telefone  |

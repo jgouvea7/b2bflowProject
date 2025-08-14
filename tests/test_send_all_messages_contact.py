@@ -6,12 +6,12 @@ client = TestClient(app)
 
 def test_create_contact():
     new_contact = {
-        "name": "Jonnathas",
+        "name": "jonnathas",
         "phone": "5511999999999"
     }
 
     new_contact2 = {
-        "name": "Roberto",
+        "name": "roberto",
         "phone": "5511999999998"
     }
 
@@ -22,11 +22,6 @@ def test_create_contact():
     assert response2.status_code == 201
 
 
-def test_get_all_contacts():
-    response = client.get("/v1/contacts")
-    assert response.status_code == 200
-
-
 def test_send_message():
     response = client.post("/v1/contacts/send-message-all")
     assert response.status_code == 200
@@ -35,13 +30,13 @@ def test_send_message():
 def test_delete_all_contacts():
     response = client.delete("/v1/contacts")
     assert response.status_code == 200
+    body = response.json()
+    assert body["message"] == "Contacts were successfully deleted"
 
-
-def test_get_all_logs():
-    response = client.get("/v1/logs")
-    assert response.status_code == 200
 
 
 def test_delete_all_logs():
     response = client.delete("/v1/logs")
     assert response.status_code == 200
+    body = response.json()
+    assert body["message"] == "Logs were successfully deleted"

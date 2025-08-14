@@ -12,6 +12,9 @@ def test_create_contact():
 
     response = client.post("/v1/contacts", json=new_contact)
     assert response.status_code == 201
+    body = response.json()
+    assert body["message"] == "Contact created successfully"
+
 
 def test_create_contact_error():
     new_contact = {
@@ -21,6 +24,8 @@ def test_create_contact_error():
 
     response = client.post("/v1/contacts", json=new_contact)
     assert response.status_code == 400
+    body = response.json()
+    assert body["detail"]["error"] == "Phone already registered"
 
 
 def test_delete_contact():
@@ -33,6 +38,8 @@ def test_delete_contact():
     )
     
     assert response.status_code == 200
+    body = response.json()
+    assert body["message"] == "Contact 'jonnathas' with number 5511999999999 was successfully deleted"
 
 
 def test_delete_contact_error():
@@ -45,19 +52,26 @@ def test_delete_contact_error():
     )
     
     assert response.status_code == 404
-
+    body = response.json()
+    assert body["detail"]["error"] == "Contact not found"
 
 
 def test_delete_all_contacts_error():
     response = client.delete("/v1/contacts")
     assert response.status_code == 404
+    body = response.json()
+    assert body["detail"]["error"] == "No contacts found"
 
 
 def test_delete_all_logs():
     response = client.delete("/v1/logs")
     assert response.status_code == 200
+    body = response.json()
+    assert body["message"] == "Logs were successfully deleted"
 
 
 def test_delete_all_logs_error():
     response = client.delete("/v1/logs")
     assert response.status_code == 404
+    body = response.json()
+    assert body["detail"]["error"] == "No logs found"

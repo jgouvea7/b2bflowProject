@@ -1,7 +1,6 @@
 from infrastructure.model.contact import session, ContactModel
 from domain.dto.create_contact import CreateContact
 from fastapi import HTTPException, status
-from fastapi.responses import JSONResponse
 from services.logs_service import create_log
 from dotenv import load_dotenv
 import requests
@@ -76,7 +75,7 @@ def delete_contacts():
     else:
         document = {
             "status": "error",
-            "message": "No contacts found"
+            "error": "No contacts found"
         }
         create_log(document, "contact-delete-all-error")
 
@@ -97,7 +96,7 @@ def delete_contact_by_phone(phone: str):
 
             document = {
                 "status": "success",
-                "message": f"Contact '{contact.name}' with number  {contact.phone} was successfully deleted"
+                "message": f"Contact '{contact.name}' with number {contact.phone} was successfully deleted"
             }
             create_log(document, "contact-delete-success")
             

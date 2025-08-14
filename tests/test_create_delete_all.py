@@ -1,4 +1,5 @@
 from fastapi.testclient import TestClient
+import json
 from main import app
 
 client = TestClient(app)
@@ -12,11 +13,15 @@ def test_create_contact():
 
     response = client.post("/v1/contacts", json=new_contact)
     assert response.status_code == 201
+    body = response.json()
+    assert body["message"] == "Contact created successfully"
 
 
 def test_delete_all_contacts():
     response = client.delete("/v1/contacts")
     assert response.status_code == 200
+    body = response.json()
+    assert body["message"] == "Contacts were successfully deleted"
 
     
 def test_get_all_logs():
@@ -24,6 +29,9 @@ def test_get_all_logs():
     assert response.status_code == 200
 
 
+
 def test_delete_all_logs():
     response = client.delete("/v1/logs")
     assert response.status_code == 200
+    body = response.json()
+    assert body["message"] == "Logs were successfully deleted"

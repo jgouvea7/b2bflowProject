@@ -1,4 +1,5 @@
 from infrastructure.model.log import session, LogModel
+from fastapi import HTTPException, status
 
 def create_log(document: dict, log_type: str):
     with session:
@@ -10,21 +11,23 @@ def create_log(document: dict, log_type: str):
         session.commit()
 
 def get_logs():
-    logs =  session.query(LogModel).all()
-    if logs:
-        return logs
-    else:
-        return {
-            "status": "error",
-            "error": "No logs found"
-        }
+    return session.query(LogModel).all()
 
 def delete_logs():
     logs = session.query(LogModel).all()
-    for log in logs:
-        session.delete(log)
-    session.commit()
-    return {
-        "status": "success",
-        "message": "Logs were successfully deleted"
-    }
+    if logs:
+        for log in logs:
+            session.delete(log)
+        session.commit()
+        return {
+            "status": "success",
+            "message": "Logs were successfully deleted"
+        }
+    else:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND,
+            detail={
+                "status": "error",
+                "error": "No logs found"
+            }
+        )

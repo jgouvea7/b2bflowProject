@@ -1,6 +1,7 @@
 from infrastructure.model.contact import session, ContactModel
 from domain.dto.create_contact import CreateContact
 from fastapi import HTTPException, status
+from fastapi.responses import JSONResponse
 from services.logs_service import create_log
 from dotenv import load_dotenv
 import requests
@@ -17,7 +18,10 @@ def create_contact(contact: CreateContact):
     if user_existing:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Phone already registered"
+            detail={
+                "status": "error",
+                "error": "Phone already registered"
+            }
             )
     
     with session:
@@ -34,6 +38,8 @@ def create_contact(contact: CreateContact):
         create_log(document, "contact-create-success")
         session.add(new_user)
         session.commit()
+        
+        return document
 
 
 
@@ -54,17 +60,31 @@ def get_contact_by_phone(phone: str):
 
 def delete_contacts():
     contacts = session.query(ContactModel).all()
-    with session:
-        for contact in contacts:
-            session.delete(contact)
-        session.commit()
+    if contacts:
+        with session:
+            for contact in contacts:
+                session.delete(contact)
+            session.commit()
 
+            document = {
+            "status": "success",
+            "message": "Contacts were successfully deleted"
+        }
+            create_log(document, "contact-delete-all-success")
+
+            return document
+    else:
         document = {
-        "status": "success",
-        "message": "Contacts were successfully deleted"
-    }
-        create_log(document, "contact-delete-all-success")
-    return document
+            "status": "error",
+            "message": "No contacts found"
+        }
+        create_log(document, "contact-delete-all-error")
+
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND,
+            detail=document
+        )
+        
 
 
 
@@ -80,6 +100,7 @@ def delete_contact_by_phone(phone: str):
                 "message": f"Contact '{contact.name}' with number  {contact.phone} was successfully deleted"
             }
             create_log(document, "contact-delete-success")
+            
             return document
     else:
         document = {
@@ -87,7 +108,11 @@ def delete_contact_by_phone(phone: str):
             "error": "Contact not found"
         }
         create_log(document, "contact-delete-error")
-        return  document
+
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND,
+            detail=document
+        )
 
 
 
@@ -121,6 +146,8 @@ def send_message_all():
 
                     results.append(document)
                     create_log(document, "message-send-success")
+
+                    return document
                 else:
                     document = {
                         "phone": contact.phone,
@@ -130,16 +157,28 @@ def send_message_all():
 
                     results.append(document)
                     create_log(document, "message-send-error")
+
+                    raise HTTPException(
+                        status.HTTP_502_BAD_GATEWAY,
+                        detail=document
+                    )
             return results
         else:
-            return {
+            raise HTTPException( 
+                status.HTTP_404_NOT_FOUND,
+                detail={
                 "status": "error",
                 "error": "No contacts found"
-            }
+                })
+        
     except Exception as e:
         document = {"error": f"Unexpected error occurred: {e}"}
         create_log(document, "unexpected-error")
-        return document
+
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail=document
+        )
 
 
 
